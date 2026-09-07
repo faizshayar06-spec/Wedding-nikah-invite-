@@ -1,0 +1,296 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mohammed Ahmed & Sahana - Nikkah Ceremony</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Amiri&display=swap" rel="stylesheet">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #faf6f0; font-family: 'Playfair Display', serif; color: #8c734b; overflow-x: hidden; }
+        #intro-screen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #faf6f0; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease-in-out; }
+        #intro-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
+        #start-btn { position: relative; z-index: 10000; padding: 15px 40px; font-size: 1.2rem; font-family: 'Playfair Display', serif; background-color: rgba(255, 255, 255, 0.9); color: #8c734b; border: 1px solid #d4af37; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        #main-content { opacity: 0; visibility: hidden; transition: opacity 1.5s ease-in-out; display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .show-content { opacity: 1 !important; visibility: visible !important; }
+        .section-title { font-family: 'Great Vibes', cursive; font-size: 3rem; color: #a88a53; margin-bottom: 10px; }
+        .divider { width: 60px; height: 1px; background-color: #e0cd98; margin: 30px auto; position: relative; }
+        .divider::after { content: '✧'; position: absolute; top: -10px; left: 25px; color: #e0cd98; font-size: 14px; }
+        
+        .hero-section { width: 100%; max-width: 600px; position: relative; background-image: url('mosque.jpg'); background-size: cover; background-position: center center; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding-top: 15%; text-align: center; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(250,246,240,0.95) 0%, rgba(250,246,240,0.6) 40%, rgba(250,246,240,0.2) 100%); z-index: 1; }
+        .hero-text { z-index: 2; position: relative; width: 90%; }
+        .welcome-text { font-size: 1.1rem; letter-spacing: 2px; color: #8b795e; margin-bottom: 10px; font-weight: bold;}
+        .nikkah-title { font-family: 'Great Vibes', cursive; font-size: 3.8rem; color: #a88a53; margin-bottom: 15px; font-weight: normal; }
+        .couple-names { font-family: 'Cinzel', serif; font-size: 2rem; color: #594a31; line-height: 1.4; margin-top: 10px; }
+        .ampersand { font-family: 'Great Vibes', cursive; font-size: 2.5rem; color: #d4af37; }
+        .scroll-down { position: absolute; bottom: 30px; z-index: 2; font-style: italic; color: #8b795e; font-size: 1.2rem; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+        
+        .date-section { width: 100%; max-width: 600px; padding: 60px 20px 40px; text-align: center; }
+        .scratch-instruction { font-size: 1rem; color: #8b795e; margin-bottom: 30px; letter-spacing: 1px; font-style: italic; }
+        .scratch-container { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
+        .scratch-wrapper { display: flex; flex-direction: column; align-items: center; }
+        .scratch-box { position: relative; width: 90px; height: 100px; border: 2px solid #e0cd98; border-radius: 8px; background-color: #fff; display: flex; justify-content: center; align-items: center; overflow: hidden; margin-bottom: 10px; }
+        .hidden-date { font-family: 'Cinzel', serif; font-size: 2rem; color: #8b795e; z-index: 1; }
+        .scratch-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
+        .date-label { font-size: 0.9rem; letter-spacing: 2px; color: #a88a53; font-weight: bold; }
+        
+        .invitation-details { width: 90%; max-width: 500px; margin: 60px auto 40px; padding: 70px 20px 40px; border: 2px solid #d4af37; border-bottom: none; border-radius: 250px 250px 0 0; text-align: center; position: relative; background-color: #fffcf8; box-shadow: inset 0 0 0 8px #faf6f0, inset 0 0 0 10px #d4af37, 0 15px 35px rgba(212,175,55,0.15); }
+        .invitation-details::before { content: ''; position: absolute; top: 18px; left: 18px; right: 18px; bottom: 0; border: 1.5px dashed #c49b33; border-bottom: none; border-radius: 232px 232px 0 0; pointer-events: none; }
+        .bismillah { font-family: 'Amiri', serif; font-size: 2.5rem; color: #8b795e; margin-bottom: 20px; }
+        .invitation-text { font-size: 0.85rem; letter-spacing: 2px; color: #8b795e; margin-bottom: 20px; text-transform: uppercase; }
+        .inv-name { font-family: 'Cinzel', serif; font-size: 2.2rem; color: #594a31; margin: 10px 0; }
+        .parents { font-size: 0.8rem; letter-spacing: 1px; color: #8b795e; margin-bottom: 20px; text-transform: uppercase; }
+        .with-text { font-family: 'Great Vibes', cursive; font-size: 2rem; color: #d4af37; margin: 15px 0; }
+        .quran-arabic { font-family: 'Amiri', serif; font-size: 2rem; color: #594a31; margin-bottom: 10px; }
+        .quran-english { font-style: italic; font-size: 1.1rem; color: #8b795e; margin-bottom: 5px; }
+        .quran-ref { font-size: 0.9rem; color: #a88a53; }
+        
+        .timeline-section { width: 100%; max-width: 600px; padding: 40px 20px; text-align: center; overflow: hidden;}
+        .timeline-container { position: relative; max-width: 400px; margin: 40px auto; padding: 40px 0; }
+        .timeline-line { position: absolute; top: 0; bottom: 0; left: 50%; width: 2px; background-color: #d4af37; transform: translateX(-50%); }
+        .timeline-flower { position: absolute; left: 50%; top: 0%; transform: translate(-50%, -50%); font-size: 28px; color: #d4af37; background-color: #faf6f0; padding: 5px 0; z-index: 10; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); transition: top 0.1s ease-out; }
+        .timeline-item { position: relative; width: 50%; margin-bottom: 60px; z-index: 5; }
+        .timeline-item.right { left: 50%; text-align: left; padding-left: 30px; }
+        .timeline-item.left { left: 0; text-align: right; padding-right: 30px; }
+        .timeline-item::after { content: '♦'; position: absolute; top: 5px; font-size: 14px; color: #a88a53; background: #faf6f0; padding: 2px 0; }
+        .timeline-item.right::after { left: -6px; }
+        .timeline-item.left::after { right: -6px; }
+        .time { font-family: 'Cinzel', serif; font-size: 1.4rem; color: #594a31; margin-bottom: 5px; }
+        .event-desc { font-size: 1rem; color: #8b795e; font-style: italic; }
+        
+        .countdown-section { width: 100%; max-width: 600px; padding: 20px 20px 40px; text-align: center; }
+        .timer-container { display: flex; justify-content: center; gap: 10px; margin-top: 20px; font-family: 'Cinzel', serif; font-size: 2.5rem; color: #594a31; }
+        .timer-box { display: flex; flex-direction: column; align-items: center; min-width: 80px; }
+        .timer-label { font-family: 'Playfair Display', serif; font-size: 0.9rem; letter-spacing: 1px; color: #a88a53; font-style: italic; margin-top: 5px; }
+        .colon { margin-top: -5px; color: #d4af37; }
+        
+        .location-section { width: 100%; max-width: 600px; padding: 40px 20px; text-align: center; }
+        .location-image { width: 100%; max-width: 260px; height: 340px; border-radius: 150px 150px 15px 15px; border: 3px solid #d4af37; margin: 0 auto 25px; display: block; box-shadow: 0 10px 25px rgba(212,175,55,0.2); object-fit: cover; }
+        .city-name { font-family: 'Cinzel', serif; font-size: 1.5rem; letter-spacing: 4px; color: #594a31; margin-bottom: 10px; }
+        .venue-name { font-size: 1.1rem; color: #8b795e; margin-bottom: 25px; line-height: 1.5; }
+        .map-wrapper { width: 100%; max-width: 500px; margin: 0 auto; border: 8px solid #fff; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); overflow: hidden; position: relative; }
+        .map-wrapper iframe { width: 100%; height: 250px; border: none; display: block; }
+        .map-frame { position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px; border: 2px solid #e0cd98; pointer-events: none; }
+        
+        .dress-section { width: 100%; max-width: 600px; padding: 40px 20px; text-align: center; }
+        .attire-illustration { width: 95%; max-width: 500px; margin: 0 auto 20px; display: block; }
+        .dress-text { font-size: 1.1rem; color: #8b795e; margin-bottom: 20px; line-height: 1.6; }
+        .highlight-attire { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: #a88a53; display: block; margin: 5px 0; }
+        .palette-title { font-size: 0.9rem; letter-spacing: 2px; color: #8b795e; text-transform: uppercase; margin-bottom: 15px; }
+        .color-palette { display: flex; justify-content: center; gap: 12px; margin-bottom: 30px; }
+        .color-circle { width: 45px; height: 45px; border-radius: 50%; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); border: 2px solid #fff; }
+        .dress-note { font-size: 0.95rem; color: #8b795e; font-style: italic; margin-bottom: 10px; padding: 0 20px; }
+        
+        .rsvp-section { width: 100%; max-width: 600px; padding: 40px 20px 80px; text-align: center; }
+        .gift-text { font-size: 1.1rem; color: #8b795e; line-height: 1.6; margin-bottom: 40px; padding: 0 15px; }
+        .rsvp-desc { font-size: 1.1rem; color: #8b795e; line-height: 1.6; margin-bottom: 30px; }
+        .rsvp-btn { background-color: #d4af37; color: #fff; border: none; padding: 12px 40px; font-family: 'Cinzel', serif; font-size: 1.2rem; letter-spacing: 2px; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4); margin-bottom: 40px; transition: background 0.3s ease; }
+        .rsvp-btn:hover { background-color: #b8962e; }
+        .hope-text { font-family: 'Great Vibes', cursive; font-size: 2.8rem; color: #a88a53; margin-bottom: 40px; }
+        .footer-text { font-size: 0.8rem; letter-spacing: 1px; color: #a39581; text-transform: uppercase; }
+        .agency-name { font-family: 'Great Vibes', cursive; font-size: 1.5rem; color: #d4af37; text-transform: none; display: block; margin-top: 5px;}
+    </style>
+</head>
+<body>
+    <div id="intro-screen">
+        <video id="intro-video" playsinline>
+            <source src="video.mp4" type="video/mp4">
+        </video>
+        <button id="start-btn">Tap to Open Invitation</button>
+    </div>
+
+    <div id="main-content">
+        
+        <div class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="hero-text">
+                <p class="welcome-text">Welcome to the</p>
+                <h1 class="nikkah-title">Nikkah Ceremony</h1>
+                <p class="welcome-text">of</p>
+                <h2 class="couple-names">Mohammed Ahmed Khan<br><span class="ampersand">&</span><br>Sahana Khan</h2>
+            </div>
+            <div class="scroll-down">Scroll down<br>⌄</div>
+        </div>
+
+        <div class="date-section">
+            <h2 class="section-title">The Date</h2>
+            <p class="scratch-instruction">✦ Scratch to reveal the date ✦</p>
+            <div class="scratch-container">
+                <div class="scratch-wrapper"><div class="scratch-box"><div class="hidden-date">10</div><canvas id="scratch-day" class="scratch-canvas"></canvas></div><p class="date-label">DAY</p></div>
+                <div class="scratch-wrapper"><div class="scratch-box"><div class="hidden-date">JAN</div><canvas id="scratch-month" class="scratch-canvas"></canvas></div><p class="date-label">MONTH</p></div>
+                <div class="scratch-wrapper"><div class="scratch-box"><div class="hidden-date">2027</div><canvas id="scratch-year" class="scratch-canvas"></canvas></div><p class="date-label">YEAR</p></div>
+            </div>
+        </div>
+
+        <div class="invitation-details">
+            <p class="bismillah">بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+            <p class="invitation-text">You are invited to the Nikkah Ceremony of</p>
+            <h2 class="inv-name">Mohammed Ahmed Khan</h2>
+            <p class="parents">Son of Mr. & Mrs. Khan</p>
+            <p class="with-text">With</p>
+            <h2 class="inv-name">Sahana Khan</h2>
+            <p class="parents">Daughter of Mr. & Mrs. Khan</p>
+            <div class="divider"></div>
+            <h3 class="quran-arabic">وَخَلَقْنَاكُمْ أَزْوَاجًا</h3>
+            <p class="quran-english">"And We created you in pairs."</p>
+            <p class="quran-ref">(Surah An-Naba 78:8)</p>
+        </div>
+
+        <div class="timeline-section">
+            <h2 class="section-title">Wedding Timeline</h2>
+            <div class="divider"></div>
+            <div class="timeline-container" id="timeline-container">
+                <div class="timeline-line"></div>
+                <div class="timeline-flower" id="timeline-flower">❀</div>
+                <div class="timeline-item right"><h3 class="time">6:00 pm</h3><p class="event-desc">Guest Arrival and<br>Welcome Drinks</p></div>
+                <div class="timeline-item left"><h3 class="time">6:30 pm</h3><p class="event-desc">Bride Entrance</p></div>
+                <div class="timeline-item right"><h3 class="time">8:30 pm</h3><p class="event-desc">Buffet Opening</p></div>
+            </div>
+        </div>
+
+        <div class="countdown-section">
+            <h2 class="section-title">The Celebration Begins</h2>
+            <div class="divider"></div>
+            <div class="timer-container">
+                <div class="timer-box"><span id="days">000</span><p class="timer-label">Days</p></div><span class="colon">:</span>
+                <div class="timer-box"><span id="hours">00</span><p class="timer-label">Hours</p></div><span class="colon">:</span>
+                <div class="timer-box"><span id="minutes">00</span><p class="timer-label">Minutes</p></div>
+            </div>
+        </div>
+
+        <div class="location-section">
+            <h2 class="section-title">Location</h2>
+            <div class="divider"></div>
+            <img src="madina.jpg" alt="Madina Shareef" class="location-image">
+            <h3 class="city-name">MADINA SHAREEF</h3>
+            <p class="venue-name">Al-Masjid an-Nabawi,<br>Al Madinah Al Munawwarah, Saudi Arabia</p>
+            <div class="map-wrapper">
+                <div class="map-frame"></div>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d116226.78767931327!2d39.52988165507427!3d24.471151608681283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15bdbe5197d220d3%3A0x2e54514fea3b08d9!2sAl%20Madinah%20Al%20Munawwarah%20Saudi%20Arabia!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <div class="dress-section">
+            <h2 class="section-title">Dress Code</h2>
+            <div class="divider"></div>
+            <img src="1000496739.png" alt="Dress Code Characters" class="attire-illustration">
+            <p class="dress-text">We kindly invite our guests to dress in <span class="highlight-attire">Traditional Pakistani Attire</span> in soft pastel shades.</p>
+            <p class="palette-title">Recommended shades</p>
+            <div class="color-palette">
+                <div class="color-circle" style="background-color: #b7a6c4;"></div>
+                <div class="color-circle" style="background-color: #e5b9a8;"></div>
+                <div class="color-circle" style="background-color: #e8d0a0;"></div>
+                <div class="color-circle" style="background-color: #dfabb6;"></div>
+                <div class="color-circle" style="background-color: #a3c4c4;"></div>
+            </div>
+            <p class="dress-note">Please avoid wearing beige, as it has been reserved for the bride and groom.</p>
+            <br>
+            <p class="dress-note">Sage green is reserved exclusively for the bridesmaids.</p>
+        </div>
+
+        <div class="rsvp-section">
+            <h2 class="section-title">View Gift List</h2>
+            <div class="divider"></div>
+            <p class="gift-text">While we adore your little ones, we have chosen to make this an adults-only celebration. We appreciate your understanding.</p>
+            <h2 class="section-title" style="margin-top: 40px;">Confirm Your Attendance</h2>
+            <div class="divider"></div>
+            <p class="rsvp-desc">To help us prepare for a joyful celebration, kindly confirm your attendance by 30 november 2026</p>
+            <button class="rsvp-btn">RSVP</button>
+            <p class="hope-text">Hope to see you there</p>
+            <p class="footer-text">Designed with love <span class="agency-name">Webventurestudio</span></p>
+        </div>
+    </div>
+    <script>
+        const startBtn = document.getElementById('start-btn');
+        const introVideo = document.getElementById('intro-video');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-content');
+
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            introVideo.play();
+        });
+
+        introVideo.addEventListener('ended', () => {
+            introScreen.style.opacity = '0';
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                mainContent.classList.add('show-content');
+                initAllScratchCards(); 
+                startCountdown(); 
+            }, 1000); 
+        });
+
+        function setupScratchCard(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+
+            let gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#f2e3c6'); gradient.addColorStop(0.5, '#d4af37'); gradient.addColorStop(1, '#aa7c11');
+            ctx.fillStyle = gradient; ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            let isDrawing = false;
+            function getCoordinates(e) {
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX || e.touches[0].clientX;
+                let y = e.clientY || e.touches[0].clientY;
+                return { x: x - rect.left, y: y - rect.top };
+            }
+            function scratch(e) {
+                if (!isDrawing) return;
+                e.preventDefault(); 
+                let pos = getCoordinates(e);
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath(); ctx.arc(pos.x, pos.y, 14, 0, Math.PI * 2); ctx.fill();
+            }
+            canvas.addEventListener('mousedown', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('mousemove', scratch);
+            canvas.addEventListener('mouseup', () => isDrawing = false);
+            canvas.addEventListener('mouseleave', () => isDrawing = false);
+            canvas.addEventListener('touchstart', (e) => { isDrawing = true; scratch(e); });
+            canvas.addEventListener('touchmove', scratch);
+            canvas.addEventListener('touchend', () => isDrawing = false);
+        }
+        function initAllScratchCards() {
+            setupScratchCard('scratch-day'); setupScratchCard('scratch-month'); setupScratchCard('scratch-year');
+        }
+
+        function startCountdown() {
+            const countDownDate = new Date("Jan 10, 2027 18:00:00").getTime();
+            const x = setInterval(function() {
+                const now = new Date().getTime();
+                const distance = countDownDate - now;
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById("days").innerHTML = days < 100 ? "0" + days : days;
+                document.getElementById("hours").innerHTML = hours < 10 ? "0" + hours : hours;
+                document.getElementById("minutes").innerHTML = minutes < 10 ? "0" + minutes : minutes;
+                if (distance < 0) {
+                    clearInterval(x);
+                    document.querySelector(".timer-container").innerHTML = "The Celebration Has Begun!";
+                }
+            }, 1000);
+        }
+
+        window.addEventListener('scroll', () => {
+            const timelineContainer = document.getElementById('timeline-container');
+            const timelineFlower = document.getElementById('timeline-flower');
+            
+            if (timelineContainer && timelineFlower) {
+                const rect = timelineContainer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                let progress = (windowHeight / 2 - rect.top) / rect.height;
+                if (progress < 0) progress = 0;
+                if (progress > 1) progress = 1;
+                timelineFlower.style.top = (progress * 100) + '%';
+            }
+        });
+    </script>
+</body>
+</html>
